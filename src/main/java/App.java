@@ -7,7 +7,7 @@ import java.util.concurrent.Executors;
 public class App {
   public static void main(String[] args) {
     ServerSocket server = null;
-    Socket connection = null;
+    Socket connection;
     try {
       server = new ServerSocket(12328);
     } catch (IOException e) {

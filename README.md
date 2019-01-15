@@ -9,9 +9,14 @@ protocol.
 - Uses TCP sockets 
 - Processes responses and requests manually via text manipulations
 
-##Goals
+## Goals
 - [x] Multithreaded server implementation
 - [x] Process requests and send a response
 - [x] Serve JSON responses to specific queries
-- [ ] Serve html pages 
+- [x] Serve html pages 
+- [ ] Create configuration file to change certain settings
+    - Ability to specify the static files folder
+- [ ] Load images
+- [ ] Load external css
+- [ ] GZIP before sending data 
 - [ ] Save and load data from an SQL database

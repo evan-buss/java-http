@@ -1,5 +1,5 @@
 import com.google.gson.Gson;
-import json.Name;
+import json.Members;
 import messages.Request;
 import messages.Response;
 
@@ -12,45 +12,41 @@ public class Server implements Runnable {
   private Request request;
   private Response response;
 
-  public Server(Socket connection) {
+  Server(Socket connection) {
     this.connection = connection;
   }
 
   @Override
   public void run() {
     parseRequest();
+    process();
     sendResponse();
   }
 
   private void parseRequest() {
     StringBuilder sb = new StringBuilder();
-    BufferedReader br = null;
+    String line;
     request = new Request();
-    try {
-      br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-    } catch (IOException e) {
-      System.err.println("Error creating stream reader: ");
-      e.printStackTrace();
-    }
 
     try {
-      String line;
-      line = br.readLine();
-      request.setType(line);
+      BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+      request.setType(br.readLine());
+      //  Loop until the end of the header
       while (!(line = br.readLine()).equals("")) {
-
-        //  Loop until the end of the header
         String[] data = line.split(": ");
+        // Add each field as a key value pair to the request object
         request.addField(data[0], data[1]);
       }
-      // If there is a body... parse that too.
+      // Request has a body, parse that too.
       if (request.getFields().containsKey("Content-Length")) {
         int remaining = Integer.parseInt(request.getFields().get("Content-Length"));
+        char[] buf = new char[100];
         while (remaining > 0) {
-          char[] buf = new char[100];
           remaining -= br.read(buf);
           sb.append(buf);
         }
+        // Set the request object body to the received data
         request.setBody(sb.toString());
       }
     } catch (IOException e) {
@@ -58,34 +54,41 @@ public class Server implements Runnable {
       e.printStackTrace();
     }
 
-    System.out.println("Request Received:\n");
-    System.out.println(request.toString());
+    System.out.println(
+        Thread.currentThread().getName() + " - Request " + "Received:\n\n" + request.toString());
   }
 
-  private void sendResponse() {
-    String query = request.getURI().substring(1);
-
-    Name name = new Name(query);
+  // Build the response object based depending on the request data
+  private void process() {
+    response = new Response();
 
     Gson gson = new Gson();
-    String json = gson.toJson(name);
+    // Do different shit depending on the path.
+    // May create a router class
+    if (request.getPath().length() > 1 && request.getPath().substring(0, 4).equals("/api")) {
+      // FIXME: Create an api class?
+      Members members = new Members();
+      response.setType("HTTP/1.1 200 OK");
+      String out = gson.toJson(members);
+      System.out.println(out);
+      response.setBody(out);
+    } else {
+      System.out.println("ELSE: " + request.getPath());
+      // If not an API call, attempt to load the static file...
+      response.setContentType(Response.ContentType.HTML);
+      PageLoader loader = new PageLoader(request.getPath(), response);
+    }
+  }
 
-    response = new Response();
-    response.setLength(Integer.toString(json.length()));
-    response.setBody(json);
-    response.setType("HTTP/1.1 200 OK");
-
-    try {
+  // Send the response object and close the connection
+  private void sendResponse() {
+    try (PrintWriter pw = new PrintWriter(connection.getOutputStream(), true)) {
       // Write the response to the tcp socket, close the connection
-      PrintWriter pw = new PrintWriter(connection.getOutputStream(), true);
       response.print(pw);
-      connection.close();
     } catch (Exception e) {
       System.err.println("Output Writer:");
       e.printStackTrace();
     }
-
-    System.out.println("\n\nResponse Sent:\n");
-    System.out.println(response.toString());
+    System.out.println("\n\nResponse Sent:\n" + response.toString());
   }
 }
