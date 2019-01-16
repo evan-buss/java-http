@@ -2,9 +2,8 @@
 
 import messages.Response;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.zip.GZIPOutputStream;
 
 public class PageLoader {
   private String content;
@@ -18,13 +17,14 @@ public class PageLoader {
     }
 
     // Attempt to load the provided url path
-    fileFound = loadFileContent(path);
+    response.addField("content-encoding", "gzip");
+    fileFound = getGZIPContent(path);
     if (fileFound) {
       response.setType("HTTP/1.1 200 OK");
     } else {
       // Send the 404 response if page not found
       response.setType("HTTP/1.1 404 Not Found");
-      loadFileContent("/404");
+      getGZIPContent("/404");
     }
     response.setBody(getContent());
   }
@@ -51,6 +51,23 @@ public class PageLoader {
       e.printStackTrace();
       return false;
     }
+  }
+
+  private boolean getGZIPContent(String path) {
+    if (!loadFileContent(path)) {
+      return false;
+    }
+    try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        GZIPOutputStream gzip = new GZIPOutputStream(bos) ) {
+        gzip.write(content.getBytes());
+        byte[] compressed = bos.toByteArray();
+        content = new String(compressed);
+    } catch (UnsupportedEncodingException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return true;
   }
 
   /**
