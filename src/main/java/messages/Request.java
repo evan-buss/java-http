@@ -64,8 +64,7 @@ public class Request extends Message {
   private String printFields() {
     StringBuilder sb = new StringBuilder();
     for (Map.Entry<String, String> entry : this.getFields().entrySet()) {
-      // sb.append("\t" + entry.getKey() + ":  " + entry.getValue() + "\n");
-      sb.append("\t").append(entry.getKey()).append(entry.getValue()).append("\n");
+      sb.append("\t").append(entry.getKey()).append(" ").append(entry.getValue()).append("\n");
     }
     return sb.toString();
   }

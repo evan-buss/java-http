@@ -9,8 +9,13 @@
 </head>
 <body>
 <h1>Welcome to the HomePage!</h1>
+<h2>This site is being served on a completely custom HTTP server written in
+    Java!</h2>
 <!--suppress HtmlUnknownTarget -->
-<a class="button" href="members">Members</a>
+<div id="button-bar">
+    <a class="button" href="members">Members</a>
+    <a class="button" href="api">Sample API</a>
+</div>
 </body>
 <style>
     body {
@@ -18,15 +23,22 @@
         flex-flow: column nowrap;
         justify-content: center;
         align-items: center;
+        font-family: "Ubuntu Mono", monospace;
     }
 
     h1 {
         text-align: center;
     }
 
+    #button-bar {
+        display: flex;
+        flex-flow: row nowrap;
+    }
+
     .button {
         width: 100px;
         padding: 15px;
+        margin: 10px;
         text-decoration: none;
         color: white;
         text-align: center;
