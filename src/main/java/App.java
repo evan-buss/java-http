@@ -13,10 +13,16 @@ public class App {
         server = new ServerSocket(Integer.parseInt(args[0]));
       } else {
         System.out.println("Usage: Requires port number parameter.");
+        System.exit(0);
       }
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    System.out.println("HTTP Server Successfully Activated");
+    System.out.println("Port: " + server.getLocalPort());
+    System.out.println("Static File Directory: " + System.getProperty("user" +
+        ".dir") + "/html/");
 
     // Thread pool of 10 threads to handle requests. This is the max.
     ExecutorService executorService = Executors.newFixedThreadPool(10);
