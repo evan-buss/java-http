@@ -8,70 +8,70 @@ import java.util.Map;
 
 public class Response extends Message {
 
-  byte[] byteBody; // Byte body is used instead of the
+    byte[] byteBody; // Byte body is used instead of the
 
-  public enum ContentType {
-    JSON,
-    HTML
-  }
-
-  public Response() {
-    this.addField("date", new Date().toString());
-    setContentType(ContentType.JSON); // Default content-type is json
-    this.addField("server", "Evan Buss Java Http");
-    this.addField("connection", "close");
-  }
-
-  public void setContentType(ContentType content) {
-    switch (content) {
-      case JSON:
-        this.addField("content-type", "application/json");
-        break;
-      case HTML:
-        this.addField("content-type", "text/html");
-        break;
+    public enum ContentType {
+        JSON,
+        HTML
     }
-  }
 
-  public byte[] getByteBody() {
-    return byteBody;
-  }
-
-  public void setByteBody(byte[] byteBody) {
-    this.byteBody = byteBody;
-    addField("content-length", Integer.toString(byteBody.length));
-  }
-
-  public void sendHeader(PrintWriter pw) {
-    pw.println(this.getType());
-    for (Map.Entry<String, String> entry : this.getFields().entrySet()) {
-      pw.println(entry.getKey() + ": " + entry.getValue());
+    public Response() {
+        this.addField("date", new Date().toString());
+        setContentType(ContentType.JSON); // Default content-type is api.json
+        this.addField("server", "Evan Buss Java Http");
+        this.addField("connection", "close");
     }
-    pw.println("");
-  }
 
-  public void sendBody(PrintWriter pw) {
-    pw.println(this.getBody());
-  }
-
-  public void sendCompressedBody(DataOutputStream dataOut) {
-    try {
-      dataOut.write(getByteBody());
-    } catch (IOException e) {
-      System.err.println("Error sending compressed body");
-      e.printStackTrace();
+    public void setContentType(ContentType content) {
+        switch (content) {
+            case JSON:
+                this.addField("content-type", "application/json");
+                break;
+            case HTML:
+                this.addField("content-type", "text/html");
+                break;
+        }
     }
-  }
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append(this.getType()).append("\n");
-    for (Map.Entry<String, String> entry : this.getFields().entrySet()) {
-      sb.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+    public byte[] getByteBody() {
+        return byteBody;
     }
-    sb.append("\n");
-    sb.append(this.getBody());
-    return sb.toString();
-  }
+
+    public void setByteBody(byte[] byteBody) {
+        this.byteBody = byteBody;
+        addField("content-length", Integer.toString(byteBody.length));
+    }
+
+    public void sendHeader(PrintWriter pw) {
+        pw.println(this.getType());
+        for (Map.Entry<String, String> entry : this.getFields().entrySet()) {
+            pw.println(entry.getKey() + ": " + entry.getValue());
+        }
+        pw.println("");
+    }
+
+    public void sendBody(PrintWriter pw) {
+        pw.println(this.getBody());
+    }
+
+    public void sendCompressedBody(DataOutputStream dataOut) {
+        try {
+            dataOut.write(getByteBody());
+        } catch (IOException e) {
+            System.err.println("Error sending compressed body");
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.getType()).append("\n");
+        for (Map.Entry<String, String> entry : this.getFields().entrySet()) {
+            sb.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+        }
+        sb.append("\n");
+        sb.append(this.getBody());
+        return sb.toString();
+    }
 }

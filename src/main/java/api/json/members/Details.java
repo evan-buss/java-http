@@ -1,4 +1,4 @@
-package json;
+package api.json.members;
 
 public class Details {
   private String name;

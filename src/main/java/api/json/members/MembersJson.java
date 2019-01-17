@@ -1,12 +1,13 @@
-package json;
+package api.json.members;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Members {
+public class MembersJson {
   private List<Details> members = new ArrayList<>();
 
-  public Members() {}
+  public MembersJson() {
+  }
 
   public void addMember(Details details) {
     this.members.add(details);

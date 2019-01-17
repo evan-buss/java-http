@@ -5,7 +5,8 @@ import java.util.Map;
 
 public class Request extends Message {
 
-  public Request() {}
+  public Request() {
+  }
 
   @Override
   public String toString() {
@@ -20,12 +21,12 @@ public class Request extends Message {
   }
 
   // Returns full address
-  private String getURI() {
+  public String getURI() {
     return getType().split(" ")[1];
   }
 
   // Returns the requested HTTP method
-  String getMethod() {
+  public String getMethod() {
     return getType().split(" ")[0];
   }
 
@@ -42,7 +43,7 @@ public class Request extends Message {
   /**
    * getQueries parses the URI string for query key-value pairs and returns them as a Map
    *
-   * @return Map<String,String> of the queries or NULL if there are no queries
+   * @return Map<String       ,       String> of the queries. Empty if no queries parsed...
    */
 
   // TODO: Queries use "&" syntax for chained????
@@ -54,6 +55,7 @@ public class Request extends Message {
       String[] splitQ = rawQ.replace("?", " ").trim().split(" ");
       for (String q : splitQ) {
         String[] parts = q.split("=");
+        parts[1] = parts[1].replace("%20", " ");
         queries.put(parts[0], parts[1]);
       }
     }
