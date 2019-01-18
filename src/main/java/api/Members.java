@@ -48,7 +48,13 @@ public class Members {
       rs = query("SELECT * FROM users", conn);
     } else {
       Map<String, String> queryMap = req.getQueries();
-      if (queryMap.containsKey("name")) {
+
+      if (queryMap.containsKey("age") && queryMap.containsKey("name")) {
+        qString =
+            "SELECT * FROM users WHERE age = '" + queryMap.get("age") + "' " +
+                "AND name = '" + queryMap.get("name") + "'";
+        rs = query(qString, conn);
+      } else if (queryMap.containsKey("name")) {
         qString = "SELECT * FROM users WHERE name = '" + queryMap.get("name") +
             "'";
         rs = query(qString, conn);
@@ -60,6 +66,7 @@ public class Members {
     }
 
     if (rs == null) {
+      System.out.println("ResultSet is null");
       return "";
     }
 
@@ -77,7 +84,8 @@ public class Members {
         res.setType("HTTP/1.1 200 OK");
         return gson.toJson(membersJSON);
       } else {
-        return "";
+        res.setContentType(Response.ContentType.TEXT);
+        return "No content matching query found.";
       }
     } catch (SQLException ex) {
       System.err.println("Error reading query results");

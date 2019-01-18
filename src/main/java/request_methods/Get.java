@@ -20,6 +20,7 @@ public class Get extends Method {
       switch (request.getPath().substring(4)) {
         case "/members":
           data = Members.get(request, response, conn);
+          break;
         default:
           data = "";
           response.setType("HTTP/1.1 404 Not Found");

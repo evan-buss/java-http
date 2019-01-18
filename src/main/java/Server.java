@@ -19,11 +19,14 @@ public class Server implements Runnable {
   /**
    * Default runnable method.
    *
-   * <p>1) Receives a request
+   * <p>
+   * 1) Receives a request
    *
-   * <p>2) Processes the request data; forming a proper response
+   * <p>
+   * 2) Processes the request data; forming a proper response
    *
-   * <p>3) Sends the response and closes the connection
+   * <p>
+   * 3) Sends the response and closes the connection
    */
   @Override
   public void run() {
@@ -42,14 +45,13 @@ public class Server implements Runnable {
 
     try {
       // Buffered reader to read the request line bye line
-      BufferedReader br =
-          new BufferedReader(new InputStreamReader(connection.getInputStream()));
+      BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
       // The first line of the request denotes the request details
       // EX) GET /home HTTP/1.1
       request.setType(br.readLine());
 
-      //  Loop until blank line; end of request header
+      // Loop until blank line; end of request header
       while (!(line = br.readLine()).equals("")) {
         // Split each line into it's key and value and save it in the request
         String[] data = line.split(": ");
@@ -58,7 +60,6 @@ public class Server implements Runnable {
 
       // Check if the header contained a "content-length" attribute denoting
       // the presence of a request body
-      // TODO: configure body processing when API is more fully implemented.
       if (request.getFields().containsKey("Content-Length")) {
         int remaining = Integer.parseInt(request.getFields().get("Content-Length"));
         char[] buf = new char[100];
@@ -76,11 +77,7 @@ public class Server implements Runnable {
       e.printStackTrace();
     }
 
-    System.out.println(
-        Thread.currentThread().getName()
-            + " - Request "
-            + "Received:\n\n"
-            + request.toString());
+    System.out.println(Thread.currentThread().getName() + " - Request " + "Received:\n\n" + request.toString());
   }
 
   /**
@@ -119,13 +116,12 @@ public class Server implements Runnable {
   }
 
   /**
-   * sendResponse is responsible for sending the response's header and optional body. It closes
-   * the tcp connection when finished.
+   * sendResponse is responsible for sending the response's header and optional
+   * body. It closes the tcp connection when finished.
    */
   private void sendResponse() {
     try (PrintWriter charOut = new PrintWriter(connection.getOutputStream(), true);
-         DataOutputStream compressedOut =
-             new DataOutputStream(connection.getOutputStream())) {
+        DataOutputStream compressedOut = new DataOutputStream(connection.getOutputStream())) {
 
       // Header is never gzipped.
       response.sendHeader(charOut);

@@ -51,8 +51,12 @@ public class Request extends Message {
     Map<String, String> queries = new HashMap<>();
     String rawQ = getURI().substring(getPath().length());
     // Check if the url has a query, if not return the empty list...
-    if (rawQ.length() > 0) {
-      String[] splitQ = rawQ.replace("?", " ").trim().split(" ");
+    if (rawQ.contains("?")) {
+      String[] splitQ = rawQ.substring(1)
+          .replace("&", " ")
+          .trim()
+          .split(" ");
+
       for (String q : splitQ) {
         String[] parts = q.split("=");
         parts[1] = parts[1].replace("%20", " ");

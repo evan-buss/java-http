@@ -63,7 +63,7 @@ public class RequestTest {
     assertThat(test.size(), is(1));
 
     // TEST 2
-    request.setType("POST /members/evan?name=Bob?age=12");
+    request.setType("POST /members/evan?name=Bob&age=12");
     test = request.getQueries();
     expected.clear();
     expected.put("name", "Bob");

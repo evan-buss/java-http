@@ -32,13 +32,15 @@ server should listen on as a command line argument.
 - [x] Process requests and send a response
 - [x] Serve JSON responses to specific queries
 - [x] Serve html pages
-- [x] GZIP before sending data
-    - All response bodies are gzipped sending  
+- [x] GZIP before sending data files
+- [x] Save and load data from an SQL database
+- [x] Implement a connection pool for SQL connections.
 - [ ] Create configuration file to change certain settings
     - Ability to specify the static files folder
 - [ ] Load images
     - This should fix the /favicon.ico failed response
 - [ ] Load external css
 - [ ] Handle requests according to their HTTP method
-- [ ] Save and load data from an SQL database
-    - Implement a connection pool for SQL connections.
+- [ ] Add support for other file types.
+    - Right now the html file extension is hard coded. This will let me load 
+    javascript files from a PWA

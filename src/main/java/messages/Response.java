@@ -8,11 +8,13 @@ import java.util.Map;
 
 public class Response extends Message {
 
-    byte[] byteBody; // Byte body is used instead of the
+    private byte[] byteBody; // Byte body is used instead of the
 
+    //TODO: Learn more about enums and use some built-in methods
     public enum ContentType {
         JSON,
-        HTML
+        HTML,
+        TEXT
     }
 
     public Response() {
@@ -29,6 +31,9 @@ public class Response extends Message {
                 break;
             case HTML:
                 this.addField("content-type", "text/html");
+                break;
+            case TEXT:
+                this.addField("content-type", "text/plain");
                 break;
         }
     }
