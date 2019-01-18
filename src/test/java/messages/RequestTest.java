@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 
 public class RequestTest {
 
-  private Request request = new Request();
+  private final Request request = new Request();
 
   // @BeforeClass
   // public static void init() {

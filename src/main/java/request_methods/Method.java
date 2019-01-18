@@ -23,6 +23,6 @@ public class Method {
 
   // Every method has to return a response.
   public String getResponse() {
-    return "DEFAULT";
+    return data;
   }
 }

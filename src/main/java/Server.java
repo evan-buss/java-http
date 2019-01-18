@@ -5,9 +5,9 @@ import request_methods.Method;
 import java.io.*;
 import java.net.Socket;
 
-public class Server implements Runnable {
+class Server implements Runnable {
 
-  private Socket connection;
+  private final Socket connection;
   private Request request;
   private Response response;
   private boolean isApiRequest, hasBody;

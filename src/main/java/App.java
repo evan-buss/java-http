@@ -4,7 +4,7 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class App {
+class App {
   public static void main(String[] args) {
     ServerSocket server = null;
     Socket connection;
@@ -20,7 +20,8 @@ public class App {
     }
 
     System.out.println("HTTP Server Successfully Activated");
-    System.out.println("Port: " + server.getLocalPort());
+    System.out.println("Port: " + (server != null ? server.getLocalPort() :
+        "Connection Error"));
     System.out.println("Static File Directory: " + System.getProperty("user" +
         ".dir") + "/html/");
 

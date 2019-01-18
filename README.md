@@ -8,7 +8,13 @@ that can serve static files as well as expose an API that servers JSON data.
 
 ### Current Features
 
- - API data is stored on a PostgreSQL database 
+ - API data is stored on a PostgreSQL database
+ - Support for hosting and serving files. (HTML)
+ - Support for querying data from an API. 
+  - Get requests on /api/members
+    - Support for parameters (name, role, age, name&age)
+  - Post requests on /api/members 
+    - Submit with a json user object body
 
 ## Details
 - Uses TCP sockets 

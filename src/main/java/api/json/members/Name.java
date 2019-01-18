@@ -1,6 +1,6 @@
 package api.json.members;
 
-public class Name {
+class Name {
   private String name;
 
   public Name(String name) {

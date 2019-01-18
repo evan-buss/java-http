@@ -5,14 +5,14 @@ import java.util.Map;
 
 public class Message {
     private String type;
-    private Map<String, String> fields = new HashMap<>();
+    private final Map<String, String> fields = new HashMap<>();
     private String body = "";
 
     String getType() {
         return type;
     }
 
-    public void setType(String type) {
+    void setType(String type) {
         this.type = type;
     }
 
@@ -32,7 +32,7 @@ public class Message {
         fields.put(key, value);
     }
 
-    public String getBody() {
+    String getBody() {
         return body;
     }
 

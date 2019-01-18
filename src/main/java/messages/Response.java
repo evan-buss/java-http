@@ -17,11 +17,27 @@ public class Response extends Message {
         TEXT
     }
 
+    public enum ResponseCode {
+        SUCCESS,
+        ERROR
+    }
+
     public Response() {
         this.addField("date", new Date().toString());
         setContentType(ContentType.JSON); // Default content-type is api.json
         this.addField("server", "Evan Buss Java Http");
         this.addField("connection", "close");
+    }
+
+    public void setResponse(ResponseCode response) {
+        switch (response) {
+            case SUCCESS:
+                this.setType("HTTP/1.1 200 OK");
+                break;
+            case ERROR:
+                this.setType("HTTP/1.1 404 Not Found");
+                break;
+        }
     }
 
     public void setContentType(ContentType content) {
@@ -38,7 +54,7 @@ public class Response extends Message {
         }
     }
 
-    public byte[] getByteBody() {
+    private byte[] getByteBody() {
         return byteBody;
     }
 

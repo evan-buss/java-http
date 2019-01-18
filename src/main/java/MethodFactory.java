@@ -15,7 +15,7 @@ class MethodFactory {
       case "DELETE":
         return new Delete(request, response);
       default:
-        response.setType("HTTP/1.1 404 Not Found");
+        response.setResponse(Response.ResponseCode.ERROR);
         response.removeField("content-type");
         return null;
     }

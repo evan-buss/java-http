@@ -23,20 +23,11 @@ public class Get extends Method {
           break;
         default:
           data = "";
-          response.setType("HTTP/1.1 404 Not Found");
+          response.setResponse(Response.ResponseCode.ERROR);
       }
     } catch (SQLException ex) {
       System.err.println("GET: Error connecting to DB");
       ex.printStackTrace();
     }
-  }
-
-  /**
-   * getResponse returns the response to the API query.
-   *
-   * @return Data loaded from the API request
-   */
-  public String getResponse() {
-    return data;
   }
 }

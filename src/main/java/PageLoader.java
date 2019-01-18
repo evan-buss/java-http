@@ -13,7 +13,7 @@ class PageLoader {
    *
    * @return Returns the loaded content as a string
    */
-  public static String load(String path, Response response) {
+  private static String load(String path, Response response) {
     if (path.equals("/")) {
       path = "/home";
     }
@@ -24,11 +24,11 @@ class PageLoader {
       while ((line = reader.readLine()) != null) {
         sb.append(line);
       }
-      response.setType("HTTP/1.1 200 OK");
+      response.setResponse(Response.ResponseCode.SUCCESS);
       return sb.toString();
     } catch (FileNotFoundException e) {
       System.err.println("Could not find that file. Loading 404 file...");
-      response.setType("HTTP/1.1 404 Not Found");
+      response.setResponse(Response.ResponseCode.ERROR);
       return load("/404", response);
     } catch (IOException e) {
       System.out.println("Error reading html line");

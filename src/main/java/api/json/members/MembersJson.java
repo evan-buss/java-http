@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MembersJson {
-  private List<Details> members = new ArrayList<>();
+  @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
+  private final List<Details> members = new ArrayList<>();
 
   public MembersJson() {
   }

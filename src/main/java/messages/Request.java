@@ -1,5 +1,8 @@
 package messages;
 
+import api.json.members.Details;
+import com.google.gson.Gson;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,13 +24,18 @@ public class Request extends Message {
   }
 
   // Returns full address
-  public String getURI() {
+  private String getURI() {
     return getType().split(" ")[1];
   }
 
   // Returns the requested HTTP method
   public String getMethod() {
     return getType().split(" ")[0];
+  }
+
+  @Override
+  public void setType(String type) {
+    super.setType(type);
   }
 
   // Returns the parsed path
@@ -43,10 +51,8 @@ public class Request extends Message {
   /**
    * getQueries parses the URI string for query key-value pairs and returns them as a Map
    *
-   * @return Map<String       ,       String> of the queries. Empty if no queries parsed...
+   * @return Map of the queries. Empty map if no queries parsed...
    */
-
-  // TODO: Queries use "&" syntax for chained????
   public Map<String, String> getQueries() {
     Map<String, String> queries = new HashMap<>();
     String rawQ = getURI().substring(getPath().length());
@@ -64,6 +70,11 @@ public class Request extends Message {
       }
     }
     return queries;
+  }
+
+  public Details getBodyDetailsObject() {
+    Gson gson = new Gson();
+    return gson.fromJson(getBody().trim(), Details.class);
   }
 
   // Print the fields formatted line by line
